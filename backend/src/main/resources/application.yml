@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/stockpilot}
+    username: ${DATABASE_USER:stockpilot}
+    password: ${DATABASE_PASSWORD:stockpilot}
+  jpa:
+    hibernate.ddl-auto: validate
+    open-in-view: false
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      acks: all
+      properties.enable.idempotence: true
+    consumer:
+      group-id: stockpilot
+      auto-offset-reset: earliest
+      properties.spring.json.trusted.packages: com.stockpilot
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:1025}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail.smtp.auth: ${SMTP_AUTH:false}
+      mail.smtp.starttls.enable: ${SMTP_STARTTLS:false}
+management.endpoints.web.exposure.include: health,info,metrics,prometheus
+springdoc.swagger-ui.path: /docs
+stockpilot:
+  seed: ${SEED_DATA:true}
+  reservation-minutes: ${RESERVATION_MINUTES:30}
+  notifications-from: ${NOTIFICATIONS_FROM:stockpilot@example.local}
